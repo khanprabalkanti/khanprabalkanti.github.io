@@ -170,6 +170,17 @@
   const tt = $('#to-top'); if (tt) tt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
 
+  /* ---- rail uptime (cosmetic: time since page load) ---- */
+  const up = $('#rail-uptime');
+  if (up) {
+    const t0 = Date.now();
+    const pad = (n) => String(n).padStart(2, '0');
+    setInterval(() => {
+      const s = Math.floor((Date.now() - t0) / 1000);
+      up.textContent = 'UP ' + pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60);
+    }, 1000);
+  }
+
   /* ---- card tilt (fine pointers only) ---- */
   if (!reduce && window.matchMedia('(pointer:fine)').matches) {
     $$('.tilt').forEach(card => {
