@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>404 · SEGFAULT — Prabal Kanti Khan</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .err { min-height: 100vh; min-height: 100svh; display: grid; place-items: center; text-align: center; padding: 40px 20px; }
+    .err__card { max-width: 620px; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--red); border-radius: 16px; padding: 38px 34px; box-shadow: var(--soft); }
+    .err__code { font-family: var(--disp); font-weight: 900; font-size: clamp(3rem, 14vw, 6.5rem); line-height: 1; background: linear-gradient(120deg, #fff, var(--red)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .err__sig { font-family: var(--mono); color: var(--red); letter-spacing: 2px; margin-top: 6px; }
+    .err__msg { font-family: var(--mono); color: var(--muted); font-size: .9rem; line-height: 1.7; margin: 20px 0 8px; white-space: pre-wrap; text-align: left; background: #05090f; border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+    .err__msg .c { color: var(--cyan); } .err__msg .a { color: var(--amber); } .err__msg .g { color: var(--green); }
+    .err__btns { margin-top: 26px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <canvas id="pcb" class="pcb-canvas" aria-hidden="true"></canvas>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <main class="err">
+    <div class="err__card">
+      <p class="err__code">0x194</p>
+      <p class="err__sig">SIGSEGV · SEGMENTATION FAULT (404)</p>
+      <pre class="err__msg"><span class="c">$</span> fetch <span class="a">requested_route</span>
+<span class="c">&gt;</span> reading address <span class="a">0xDEADBEEF</span> ...
+<span class="c">&gt;</span> <span class="g">FAULT</span>: page not mapped — this resource doesn't exist.
+<span class="c">&gt;</span> core dumped. recovering stack pointer → <span class="g">/</span></pre>
+      <div class="err__btns">
+        <a href="/" class="btn btn--primary">↩ Return to / (home)</a>
+        <a href="/#connect" class="btn btn--ghost">Open a support line ⚡</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/pcb.js" defer></script>
+</body>
+</html>

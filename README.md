@@ -1,61 +1,59 @@
-# Prabal Kanti Khan — Portfolio ⚡
+# Prabal Kanti Khan — Interactive "Embedded Lab" Portfolio ⚡
 
-An embedded-systems-themed personal portfolio. Built as a single, dependency-free
-static site (HTML + CSS + vanilla JS) so it runs anywhere and deploys for free.
+A single-page personal portfolio themed as a working electronics lab, where **every
+section is "activated" by a real hardware mechanic**. Pure static site — **vanilla
+HTML/CSS/JS, zero dependencies, no build step.**
 
 ## ✨ Highlights
+- **Preloader → breadboard intro:** a firmware-flash preloader hands off to an interactive
+  build gate — drag an **ESP32** and a **1.3" I²C OLED** onto a breadboard, wire VCC/GND/SDA/SCL,
+  "upload" firmware, and the OLED prints *Hello, Welcome!* then zooms in to reveal the site.
+- **Hero:** animated STM32 chip + clock tree, typed role, tech ticker.
+- **About // UART:** bio streams into a serial monitor @115200 baud.
+- **Skills // 74HC595:** bits clock through a shift register, lighting each skill bank.
+- **Projects // DMA:** project modules decode onto a bus with a scan-line reveal.
+- **Experience // Program Counter:** timeline stepped by an instruction pointer.
+- **Telemetry // I²C SSD1306:** connect SDA + SCL to bring an OLED dashboard online.
+- **GPIO Lab:** multi-port (A–D) bare-metal register playground — wire your own LED + button
+  to any pin, enable RCC, set MODER, drive ODR, read IDR, mirror button → LED.
+- **Connect:** drag a wire from a battery to a bulb to power on the contact details.
+- **Extras:** Web-Audio sound toggle (off by default), magnetic cursor (desktop), and a
+  Konami-code **Debug Mode** (`↑↑↓↓←→←→BA`).
 
-- **Boot sequence** — a terminal-style power-on self-test that "boots" the site (press `Esc` or *Skip* to skip).
-- **Live PCB background** — a `<canvas>` of circuit traces with glowing solder pads and current pulses flowing along the routes.
-- **Connect-a-wire contact gateway** — drag a wire from the battery's **+** terminal to the bulb. When the circuit closes, the bulb lights up and the contact details power on. (Touch-friendly; double-click or press `Enter` on the terminal as a fallback.)
-- **Hero oscilloscope** — a live animated waveform.
-- **Component-style interactions** — skill chips energize on hover, project cards tilt in 3D, animated stat counters, scroll-reveal sections.
-- **Responsive** + honors `prefers-reduced-motion`.
+## ♿ Accessibility & performance
+- Full keyboard support for every interaction (Tab/Enter/Space), ARIA live regions on all
+  dynamic areas, visible cyan focus rings, and a clean `<noscript>` fallback.
+- Honors `prefers-reduced-motion` (all animations off, content shown statically).
+- Lazy-initialized PCB canvas; JS+CSS payload ~115 KB.
 
 ## 📁 Structure
-
 ```
 portfolio/
-├── index.html          # all sections / markup
-├── css/
-│   └── style.css        # theme, layout, animations, responsive
-├── js/
-│   ├── circuit.js       # PCB background canvas + oscilloscope
-│   ├── wire.js          # interactive connect-a-wire contact gateway
-│   └── main.js          # boot, typing, reveals, nav, counters, tilt
-└── README.md
+├── index.html · 404.html
+├── css/style.css
+├── js/  preloader, pcb, hero-mcu, uart, shiftreg, oled, gpio, wire, assembly,
+│        sound, cursor, easter-egg, core
+├── assets/  favicon.svg · favicon-32/icon-192/icon-512 · apple-touch-icon ·
+│            og-preview.png · Prabal_Kanti_Khan_Resume.pdf
+├── favicon.ico · site.webmanifest · sitemap.xml · robots.txt · CNAME
+└── .github/workflows/deploy.yml
 ```
 
 ## ▶️ Run locally
-
-It's a static site — just open `index.html` in a browser. For best results
-(canvas sizing, fonts) serve it over a local HTTP server:
-
 ```bash
 cd portfolio
-python3 -m http.server 8080
-# then open http://localhost:8080
+python3 -m http.server 8080   # → http://localhost:8080
 ```
 
-Any static server works (`npx serve`, VS Code Live Server, etc.).
+## 🚀 Deploy (GitHub Pages)
+1. Push to a GitHub repo's `main` branch.
+2. Settings → Pages → Source: **GitHub Actions**. The included workflow
+   (`.github/workflows/deploy.yml`) publishes the site automatically on every push.
+3. Custom domain is set via the `CNAME` file (`prabalkanti.dev`) — point your DNS at GitHub Pages.
 
-## 🚀 Deploy (free options)
-
-**GitHub Pages**
-1. Push this folder to a repo (e.g. `khanprabalkanti.github.io` or any repo).
-2. Settings → Pages → Source: `main` branch, root (or `/portfolio`).
-3. Live at `https://khanprabalkanti.github.io/`.
-
-**Netlify / Vercel** — drag-and-drop the `portfolio` folder, or connect the repo.
-No build command needed; publish directory is the folder itself.
-
-## ✏️ Customize
-
-- **Colors** — edit the CSS variables at the top of `css/style.css` (`:root`).
-- **Typed roles** — `roles[]` array in `js/main.js`.
-- **Boot log lines** — `lines[]` array in `js/main.js`.
-- **Content** — all text lives in `index.html`.
+## ✏️ Notes
+- Replace `assets/Prabal_Kanti_Khan_Resume.pdf` with your latest CV anytime (same filename).
+- Update the canonical/OG URLs in `index.html` if you use a different domain.
 
 ---
-
 Contact: prabalkanti.work@gmail.com · [LinkedIn](https://www.linkedin.com/in/prabal-kanti-khan-84b23a223/) · [GitHub](https://github.com/khanprabalkanti) · [YouTube @TechanicZ](https://www.youtube.com/@TechanicZ)
