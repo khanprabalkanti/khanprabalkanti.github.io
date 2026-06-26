@@ -85,6 +85,16 @@
     </div>
   </noscript>
 
+  <!-- ====================== PRELOADER (firmware flash) ====================== -->
+  <div id="preloader" class="preloader" role="status" aria-live="polite" aria-label="Loading">
+    <div class="preloader__inner">
+      <p class="preloader__title">Initializing Lab Environment<span id="pre-dots"></span></p>
+      <pre class="preloader__hex" id="pre-hex" aria-hidden="true"></pre>
+      <div class="preloader__bar"><span id="pre-bar"></span></div>
+      <p class="preloader__pct" id="pre-pct">0x0000</p>
+    </div>
+  </div>
+
   <!-- ====================== INTRO: BREADBOARD ASSEMBLY ====================== -->
   <div id="assembly" class="asm">
     <div class="asm__panel">
@@ -226,6 +236,7 @@
       <a href="#gpio">GPIO Lab</a>
       <a href="#connect" class="nav__cta">Connect</a>
     </nav>
+    <button class="nav__sound" id="sound-toggle" type="button" aria-pressed="false" aria-label="Toggle sound effects" title="Sound: off">🔇</button>
     <button class="nav__burger" id="nav-burger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
   </header>
 
@@ -656,6 +667,7 @@
 
   <button id="to-top" class="to-top" aria-label="Back to top">▲</button>
 
+  <script src="js/preloader.js" defer></script>
   <script src="js/pcb.js" defer></script>
   <script src="js/hero-mcu.js" defer></script>
   <script src="js/uart.js" defer></script>
@@ -664,6 +676,9 @@
   <script src="js/gpio.js" defer></script>
   <script src="js/wire.js" defer></script>
   <script src="js/assembly.js" defer></script>
+  <script src="js/sound.js" defer></script>
+  <script src="js/cursor.js" defer></script>
+  <script src="js/easter-egg.js" defer></script>
   <script src="js/core.js" defer></script>
 </body>
 </html>

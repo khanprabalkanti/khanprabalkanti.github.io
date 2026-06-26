@@ -256,6 +256,7 @@
     function onOdrBit(i) {
       const st = S[cur]; if (!st.rcc || st.mode[i] !== 1) return;
       st.odr[i] ^= 1;
+      try { window.dispatchEvent(new Event('lab:toggle')); } catch (_) {}
       render();
     }
 

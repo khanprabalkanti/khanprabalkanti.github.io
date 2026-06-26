@@ -153,6 +153,7 @@
       path.style.strokeDasharray = len; path.style.strokeDashoffset = len;
       requestAnimationFrame(() => { path.style.transition = 'stroke-dashoffset .5s ease'; path.style.strokeDashoffset = '0'; });
       pinEl(w.a).classList.add('wired'); pinEl(w.b).classList.add('wired');
+      try { window.dispatchEvent(new Event('lab:connect')); } catch (_) {}
     }
 
     function onPinTap(e) {

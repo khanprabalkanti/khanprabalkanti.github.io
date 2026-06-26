@@ -94,6 +94,7 @@
     connected = true;
     armSource(false);
     live.setAttribute('d', '');
+    try { window.dispatchEvent(new Event('lab:connect')); } catch (_) {}
 
     // draw the committed wire and animate current flowing into it
     done.setAttribute('d', cable(START, END));
