@@ -1,0 +1,14 @@
+{
+  "name": "Prabal Kanti Khan — Embedded Systems & IoT Developer",
+  "short_name": "PKK Lab",
+  "description": "Interactive electronics-lab portfolio of Prabal Kanti Khan.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060a12",
+  "theme_color": "#060a12",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
