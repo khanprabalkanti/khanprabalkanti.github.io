@@ -20,6 +20,25 @@
 </head>
 <body>
 
+  <!-- ====================== NOSCRIPT FALLBACK ====================== -->
+  <noscript>
+    <style>
+      #assembly, #oled-zoom, #preloader, .pcb-canvas, .grid-overlay, .rail, #to-top { display: none !important; }
+      body { overflow: auto !important; padding-left: 0 !important; }
+      .reveal, .pcard, .skillbank, .tl-item { opacity: 1 !important; transform: none !important; }
+      .contact-reveal { max-height: none !important; opacity: 1 !important; margin-top: 24px !important; }
+      .noscript-note { display: block !important; }
+    </style>
+    <div class="noscript-note" style="position:relative;z-index:5;margin:84px auto 0;max-width:760px;padding:16px 20px;border:1px solid #243352;border-left:3px solid #fbbf24;border-radius:10px;background:#0c1322;color:#eaf2ff;font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:1.6">
+      ⚠ JavaScript is disabled — you're viewing the static fallback of this interactive portfolio.
+      <strong>Prabal Kanti Khan</strong> · Embedded Systems &amp; IoT Developer · B.Tech ECE, Heritage Institute of Technology (2026).
+      Contact: <a style="color:#22d3ee" href="mailto:prabalkanti.work@gmail.com">prabalkanti.work@gmail.com</a> ·
+      <a style="color:#22d3ee" href="https://github.com/khanprabalkanti">GitHub</a> ·
+      <a style="color:#22d3ee" href="https://www.linkedin.com/in/prabal-kanti-khan-84b23a223/">LinkedIn</a> ·
+      <a style="color:#22d3ee" href="https://www.youtube.com/@TechanicZ">YouTube</a>.
+    </div>
+  </noscript>
+
   <!-- ====================== INTRO: BREADBOARD ASSEMBLY ====================== -->
   <div id="assembly" class="asm">
     <div class="asm__panel">
@@ -30,7 +49,7 @@
 
       <div class="asm__steptxt">
         <span class="asm__stepno" id="asm-stepno">1 / 6</span>
-        <span id="asm-step">Drag the <b>ESP32</b> onto the glowing slot on the breadboard.</span>
+        <span id="asm-step" aria-live="polite">Drag the <b>ESP32</b> onto the glowing slot on the breadboard.</span>
       </div>
       <div class="asm__bar"><span id="asm-bar"></span></div>
 
@@ -225,7 +244,7 @@
               <span class="led led--g"></span> SERIAL MONITOR — /dev/ttyUSB0 · 115200 8N1
               <span class="serial__status" id="serial-status">● LISTENING</span>
             </div>
-            <pre class="serial__out" id="serial-out"></pre>
+            <pre class="serial__out" id="serial-out" role="log" aria-live="polite" aria-label="UART serial monitor — streaming bio"></pre>
           </div>
 
           <!-- profile facts -->
@@ -425,7 +444,7 @@
         <div class="oled-note">
           <p>Tap <b>SDA</b> then <b>SCL</b> to wire the bus. Once both lines are pulled up, the master issues
           <code>0x3C</code> + init commands and the panel renders live telemetry — uptime, signal and a build readout.</p>
-          <div class="oled-readout" id="oled-readout">
+          <div class="oled-readout" id="oled-readout" role="status" aria-live="polite">
             <span class="led led--r" id="oled-led"></span> <span id="oled-state">BUS IDLE — SDA/SCL floating</span>
           </div>
         </div>
@@ -480,32 +499,32 @@
             </g>
           </svg>
 
-          <div class="glab__hint" id="g-hint">// select a port, then tap “Wire LED” and a pin</div>
+          <div class="glab__hint" id="g-hint" role="status" aria-live="polite">// select a port, then tap “Wire LED” and a pin</div>
         </div>
 
         <!-- ===== registers ===== -->
         <div class="glab__regs">
           <div class="greg" id="greg-rcc">
             <div class="greg__row"><span class="greg__name">RCC-&gt;AHB1ENR</span><span class="greg__hex" id="g-rcc-hex">0x00</span></div>
-            <div class="greg__bits" id="g-rcc"></div>
+            <div class="greg__bits" id="g-rcc" role="group" aria-label="RCC AHB1ENR clock-enable bits"></div>
             <p class="greg__hint">Clock-gates each port. Click the highlighted bit to enable the selected port (A=0 · B=1 · C=2 · D=3).</p>
           </div>
 
           <div class="greg" id="greg-moder" data-locked>
             <div class="greg__row"><span class="greg__name" id="g-moder-name">GPIOA-&gt;MODER</span><span class="greg__hex" id="g-moder-hex">0x0000</span></div>
-            <div class="greg__bits" id="g-moder"></div>
+            <div class="greg__bits" id="g-moder" role="group" aria-label="GPIO MODER pin-mode bits"></div>
             <p class="greg__hint">2 bits per pin · click a pin to cycle <b>00</b> input → <b>01</b> output. Set the LED pin to OUTPUT, the button pin to INPUT.</p>
           </div>
 
           <div class="greg" id="greg-odr" data-locked>
             <div class="greg__row"><span class="greg__name" id="g-odr-name">GPIOA-&gt;ODR</span><span class="greg__hex" id="g-odr-hex">0x00</span></div>
-            <div class="greg__bits" id="g-odr"></div>
+            <div class="greg__bits" id="g-odr" role="group" aria-label="GPIO ODR output-data bits"></div>
             <p class="greg__hint">Output latch — click the LED pin’s bit to drive it HIGH and light the LED (output mode only).</p>
           </div>
 
           <div class="greg" id="greg-idr">
             <div class="greg__row"><span class="greg__name" id="g-idr-name">GPIOA-&gt;IDR</span><span class="greg__hex" id="g-idr-hex">0x00</span></div>
-            <div class="greg__bits" id="g-idr"></div>
+            <div class="greg__bits" id="g-idr" role="group" aria-label="GPIO IDR input-data bits (read-only)"></div>
             <p class="greg__hint">Read-only input — the button pin reads <b>1</b> while pressed (input mode).</p>
           </div>
 
@@ -513,7 +532,7 @@
             <span class="gmirror__txt">Mirror button → LED <i>// while(1){ if(IDR&amp;btn) ODR|=led; }</i></span>
           </label>
 
-          <p class="glab__status" id="g-status">// enable the RCC clock to begin</p>
+          <p class="glab__status" id="g-status" role="status" aria-live="polite">// enable the RCC clock to begin</p>
         </div>
       </div>
     </section>
@@ -552,7 +571,7 @@
         </svg>
         <div class="lab-status">
           <span class="lab-status__led" id="lab-led"></span>
-          <span id="lab-text">CIRCUIT OPEN — awaiting connection</span>
+          <span id="lab-text" role="status" aria-live="polite">CIRCUIT OPEN — awaiting connection</span>
         </div>
       </div>
 

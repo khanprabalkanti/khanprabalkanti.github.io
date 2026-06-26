@@ -140,7 +140,21 @@
     raf = requestAnimationFrame(loop);
   }
 
-  resize();
-  window.addEventListener('resize', () => { cancelAnimationFrame(raf); resize(); if (!reduce) loop(); });
-  if (!reduce) loop();
+  // ---- lazy init: when #pcb enters viewport OR after 2s, whichever first ----
+  let started = false;
+  function start() {
+    if (started) return; started = true;
+    resize();
+    window.addEventListener('resize', () => { cancelAnimationFrame(raf); resize(); if (!reduce) loop(); });
+    if (!reduce) loop();
+  }
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((ents) => {
+      if (ents.some(e => e.isIntersecting)) { io.disconnect(); start(); }
+    });
+    io.observe(canvas);
+    setTimeout(() => { try { io.disconnect(); } catch (_) {} start(); }, 2000);
+  } else {
+    start();
+  }
 })();

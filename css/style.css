@@ -13,9 +13,9 @@
   --line:      #1b2740;
   --line-2:    #243352;
   --ink:       #eaf2ff;
-  --muted:     #93a6c8;
-  --dim:       #5d7099;
-  --faint:     #34425f;
+  --muted:     #9fb1d1;
+  --dim:       #8094bd;
+  --faint:     #6a7da6;
 
   /* signals */
   --cyan:      #22d3ee;
@@ -54,6 +54,13 @@ a { color: inherit; text-decoration: none; }
 img, svg, canvas { display: block; }
 ::selection { background: var(--cyan); color: #001016; }
 :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
+/* SVG interactive elements (pins, pads, draggable comps, push button) */
+.apin:focus-visible, .gpad:focus-visible, .comp:focus-visible,
+#g-btn:focus-visible, #g-led:focus-visible, .node:focus-visible {
+  outline: 2px solid var(--cyan); outline-offset: 2px;
+}
+.apin:focus-visible { stroke: var(--cyan); stroke-width: 3; }
+.gpad:focus-visible .gpad__hole, .node:focus-visible { stroke: var(--cyan); stroke-width: 3; }
 
 /* layered backdrop */
 body::before {
@@ -567,8 +574,7 @@ body::after {
   .hero__btns { gap: 12px; }
   .hero__btns .btn { flex: 1 1 auto; justify-content: center; }
   .serial__out { min-height: 220px; font-size: .76rem; }
-  .leds { gap: 7px; }
-  .bit { width: 23px; height: 27px; font-size: .72rem; }
+  .gbit { width: 24px; height: 34px; }
 }
 @media (max-width: 420px) {
   .nav__name { display: none; }

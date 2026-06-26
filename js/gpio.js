@@ -52,6 +52,10 @@
       padsG.appendChild(g);
       padEls.push(g);
       g.addEventListener('click', () => onPadClick(i));
+      g.setAttribute('tabindex', '0');
+      g.setAttribute('role', 'button');
+      g.setAttribute('aria-label', 'GPIO pin ' + i + ' pad');
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPadClick(i); } });
     }
     function padName(i) { return 'P' + cur + i; }
 
@@ -282,6 +286,12 @@
     if (btnG) {
       btnG.addEventListener('pointerdown', (e) => { e.preventDefault(); if (S[cur].btn != null) press(true); });
       window.addEventListener('pointerup', () => { if (pressed) press(false); });
+      // keyboard: focus the button group and hold Enter/Space
+      btnG.setAttribute('tabindex', '0');
+      btnG.setAttribute('role', 'button');
+      btnG.setAttribute('aria-label', 'Momentary push button — hold Enter to press');
+      btnG.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && !e.repeat) { e.preventDefault(); if (S[cur].btn != null) press(true); } });
+      btnG.addEventListener('keyup', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (pressed) press(false); } });
     }
     if (link) link.addEventListener('change', () => { S[cur].link = link.checked; render(); });
 

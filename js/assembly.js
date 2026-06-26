@@ -59,6 +59,21 @@
       let tx = startTx, ty = startTy, dragging = false, sx = 0, sy = 0, otx = 0, oty = 0, placed = false;
       group.setAttribute('transform', `translate(${tx},${ty})`);
       group.classList.add('comp--draggable');
+      // keyboard accessibility
+      group.setAttribute('tabindex', '0');
+      group.setAttribute('role', 'button');
+      const cname = group.id === 'esp32' ? 'ESP32' : '1.3-inch OLED';
+      group.setAttribute('aria-label', 'Place the ' + cname + ' on the breadboard (press Enter)');
+
+      function placeHome() {
+        if (placed) return;
+        placed = true;
+        group.classList.remove('comp--draggable');
+        group.classList.add('placed');
+        group.removeAttribute('tabindex');
+        animateTo(group, tx, ty, 0, 0, () => { group.setAttribute('transform', 'translate(0,0)'); });
+        onPlaced();
+      }
 
       function down(e) {
         if (placed) return;
@@ -67,6 +82,9 @@
         const p = toSvg(e); sx = p.x; sy = p.y; otx = tx; oty = ty;
         if (e.pointerId != null && group.setPointerCapture) { try { group.setPointerCapture(e.pointerId); } catch (_) {} }
       }
+      group.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); placeHome(); }
+      });
       function move(e) {
         if (!dragging) return;
         const p = toSvg(e);
@@ -78,14 +96,8 @@
         dragging = false; group.classList.remove('grabbing');
         const dist = Math.hypot(tx, ty);
         if (dist < 70) {           // close enough → snap home
-          placed = true;
-          group.classList.remove('comp--draggable');
-          group.classList.add('placed');
-          // animate snap
-          animateTo(group, tx, ty, 0, 0, () => { group.setAttribute('transform', 'translate(0,0)'); });
-          onPlaced();
+          placeHome();
         } else {
-          // ease back toward tray a touch (keep where dropped)
           group.setAttribute('transform', `translate(${tx},${ty})`);
         }
       }
@@ -162,7 +174,16 @@
     function flashWrong(el) { el.classList.add('wrong'); setTimeout(() => el.classList.remove('wrong'), 320); }
 
     function enableWiring() {
-      svg.querySelectorAll('.apin').forEach(p => { p.style.pointerEvents = 'auto'; p.addEventListener('click', onPinTap); });
+      svg.querySelectorAll('.apin').forEach(p => {
+        p.style.pointerEvents = 'auto';
+        p.addEventListener('click', onPinTap);
+        p.setAttribute('tabindex', '0');
+        p.setAttribute('role', 'button');
+        p.setAttribute('aria-label', 'Pin ' + (p.dataset.pin || '').replace('-', ' ') + ' — press Enter to connect');
+        p.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPinTap({ currentTarget: p }); }
+        });
+      });
       highlightWire();
     }
 
