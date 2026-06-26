@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Prabal Kanti Khan — Embedded Systems & IoT Developer. An interactive embedded-lab portfolio: STM32, UART, shift registers, I2C OLED, GPIO." />
+  <meta name="author" content="Prabal Kanti Khan" />
+  <meta name="theme-color" content="#060a12" />
+  <meta property="og:title" content="Prabal Kanti Khan — Embedded Systems & IoT" />
+  <meta property="og:description" content="An interactive embedded-systems lab: boot the MCU, clock in skills through a shift register, stream a UART bio, power an I2C OLED and toggle GPIO." />
+  <meta property="og:type" content="website" />
+  <title>Prabal Kanti Khan · Embedded Lab</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ====================== INTRO: BREADBOARD ASSEMBLY ====================== -->
+  <div id="assembly" class="asm">
+    <div class="asm__panel">
+      <div class="asm__hud">
+        <div class="asm__brand"><span class="nav__chip">PKK</span> Embedded Lab · build &amp; boot</div>
+        <button id="asm-skip" class="asm__skip">Skip intro &raquo;</button>
+      </div>
+
+      <div class="asm__steptxt">
+        <span class="asm__stepno" id="asm-stepno">1 / 6</span>
+        <span id="asm-step">Drag the <b>ESP32</b> onto the glowing slot on the breadboard.</span>
+      </div>
+      <div class="asm__bar"><span id="asm-bar"></span></div>
+
+      <div class="asm__stage">
+        <svg id="asm-svg" viewBox="0 0 920 560" preserveAspectRatio="xMidYMid meet" aria-label="Build the circuit: place the ESP32 and OLED on the breadboard and wire them up">
+          <defs>
+            <pattern id="bb-holes" width="22" height="22" patternUnits="userSpaceOnUse">
+              <rect width="22" height="22" fill="none"/>
+              <circle cx="11" cy="11" r="2" fill="#0b1322"/>
+            </pattern>
+          </defs>
+
+          <!-- breadboard -->
+          <g class="bb">
+            <rect x="80" y="58" width="760" height="330" rx="14" class="bb__body"/>
+            <rect x="96" y="74" width="728" height="26" rx="6" class="bb__rail bb__rail--pos"/>
+            <rect x="96" y="346" width="728" height="26" rx="6" class="bb__rail bb__rail--neg"/>
+            <rect x="96" y="112" width="728" height="222" fill="url(#bb-holes)"/>
+            <line x1="96" y1="223" x2="824" y2="223" class="bb__channel"/>
+            <text x="104" y="92" class="bb__lbl bb__lbl--pos">+ + + + + + + + + + + + + +</text>
+            <text x="104" y="364" class="bb__lbl bb__lbl--neg">– – – – – – – – – – – – – –</text>
+          </g>
+
+          <!-- ghost target slots -->
+          <rect id="ghost-esp"  class="ghost" x="168" y="96" width="150" height="250" rx="12"/>
+          <rect id="ghost-oled" class="ghost" x="540" y="118" width="186" height="118" rx="10"/>
+
+          <!-- committed wires -->
+          <g id="asm-wires"></g>
+
+          <!-- ESP32 board (draggable) -->
+          <g id="esp32" class="comp" transform="translate(-150,52)">
+            <rect x="168" y="96" width="150" height="250" rx="12" class="esp__body"/>
+            <rect x="200" y="110" width="86" height="40" rx="4" class="esp__usb"/>
+            <text x="243" y="135" text-anchor="middle" class="esp__name">ESP32</text>
+            <text x="243" y="172" text-anchor="middle" class="esp__sub">DEVKIT v1</text>
+            <!-- shield can -->
+            <rect x="196" y="186" width="94" height="78" rx="4" class="esp__can"/>
+            <!-- right-edge header pins -->
+            <g class="esp__pins">
+              <circle class="apin" data-pin="e-3v3" cx="318" cy="150" r="9"/>
+              <circle class="apin" data-pin="e-gnd" cx="318" cy="200" r="9"/>
+              <circle class="apin" data-pin="e-g21" cx="318" cy="250" r="9"/>
+              <circle class="apin" data-pin="e-g22" cx="318" cy="300" r="9"/>
+              <text x="332" y="154" class="apin__lbl">3V3</text>
+              <text x="332" y="204" class="apin__lbl">GND</text>
+              <text x="332" y="254" class="apin__lbl">G21·SDA</text>
+              <text x="332" y="304" class="apin__lbl">G22·SCL</text>
+            </g>
+          </g>
+
+          <!-- 1.3" OLED (draggable) -->
+          <g id="oled-comp" class="comp" transform="translate(150,150)">
+            <rect x="540" y="118" width="186" height="118" rx="10" class="ol__body"/>
+            <rect x="556" y="130" width="154" height="76" rx="4" class="ol__screen"/>
+            <text x="633" y="162" text-anchor="middle" class="ol__l1" id="ol-l1"></text>
+            <text x="633" y="190" text-anchor="middle" class="ol__l2" id="ol-l2"></text>
+            <text x="633" y="172" text-anchor="middle" class="ol__off" id="ol-off">1.3" OLED</text>
+            <!-- bottom header pins -->
+            <g class="ol__pins">
+              <circle class="apin" data-pin="o-gnd" cx="566" cy="224" r="8"/>
+              <circle class="apin" data-pin="o-vcc" cx="602" cy="224" r="8"/>
+              <circle class="apin" data-pin="o-scl" cx="638" cy="224" r="8"/>
+              <circle class="apin" data-pin="o-sda" cx="674" cy="224" r="8"/>
+              <text x="566" y="246" text-anchor="middle" class="apin__lbl apin__lbl--sm">GND</text>
+              <text x="602" y="246" text-anchor="middle" class="apin__lbl apin__lbl--sm">VCC</text>
+              <text x="638" y="246" text-anchor="middle" class="apin__lbl apin__lbl--sm">SCL</text>
+              <text x="674" y="246" text-anchor="middle" class="apin__lbl apin__lbl--sm">SDA</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <!-- code-gen / upload console -->
+      <div class="asm__console" id="asm-console" hidden>
+        <div class="asm__console-bar"><span class="led led--g"></span> arduino-cli · esp32:esp32 · upload</div>
+        <pre class="asm__code" id="asm-code"></pre>
+        <div class="asm__upload" id="asm-upload" hidden>
+          <span id="asm-upload-txt">Uploading firmware…</span>
+          <div class="asm__upbar"><span id="asm-upbar"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- fullscreen OLED zoom reveal -->
+  <div id="oled-zoom" class="oledzoom" aria-hidden="true">
+    <div class="oledzoom__scr">
+      <span class="oledzoom__l1">Hello,</span>
+      <span class="oledzoom__l2">Welcome!</span>
+    </div>
+  </div>
+
+
+  <!-- ====================== LIVE PCB BACKGROUND ====================== -->
+  <canvas id="pcb" class="pcb-canvas" aria-hidden="true"></canvas>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- ====================== SYSTEM RAIL (desktop HUD) ====================== -->
+  <aside class="rail" id="rail" aria-hidden="true">
+    <span class="rail__clk" id="rail-clk"></span>
+    <ol class="rail__list">
+      <li data-rail="home"><b>0x00</b><i>BOOT</i></li>
+      <li data-rail="about"><b>0x01</b><i>UART</i></li>
+      <li data-rail="skills"><b>0x02</b><i>SHIFT</i></li>
+      <li data-rail="projects"><b>0x03</b><i>DMA</i></li>
+      <li data-rail="experience"><b>0x04</b><i>TIMER</i></li>
+      <li data-rail="telemetry"><b>0x05</b><i>I2C</i></li>
+      <li data-rail="gpio"><b>0x06</b><i>GPIO</i></li>
+      <li data-rail="connect"><b>0x07</b><i>LINK</i></li>
+    </ol>
+    <span class="rail__pc" id="rail-pc">PC&nbsp;0x00</span>
+  </aside>
+
+  <!-- ====================== NAV ====================== -->
+  <header class="nav" id="nav">
+    <a href="#home" class="nav__brand">
+      <span class="nav__chip">PKK</span>
+      <span class="nav__name">Prabal Kanti Khan</span>
+    </a>
+    <nav class="nav__links" id="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#telemetry">Telemetry</a>
+      <a href="#gpio">GPIO Lab</a>
+      <a href="#connect" class="nav__cta">Connect</a>
+    </nav>
+    <button class="nav__burger" id="nav-burger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </header>
+
+  <main>
+    <!-- ====================== HERO ====================== -->
+    <section id="home" class="hero" data-rail="home">
+      <div class="hero__grid">
+        <div class="hero__text">
+          <p class="hero__kick"><span class="led led--g"></span> SYSTEM ONLINE · SYSCLK 168&nbsp;MHz</p>
+          <h1 class="hero__name">Prabal<br>Kanti Khan</h1>
+          <h2 class="hero__role"><span id="typed"></span><span class="caret">▋</span></h2>
+          <p class="hero__tag">
+            I build complete <strong>IoT &amp; embedded systems</strong> — from circuit design and
+            bare-metal firmware to cloud dashboards and wireless communication.
+          </p>
+          <div class="hero__btns">
+            <a href="#projects" class="btn btn--primary">Explore Projects</a>
+            <a href="#connect" class="btn btn--ghost">Connect a Wire ⚡</a>
+          </div>
+          <div class="hero__socials">
+            <a href="https://github.com/khanprabalkanti" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/in/prabal-kanti-khan-84b23a223/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener">YouTube</a>
+            <a href="mailto:prabalkanti.work@gmail.com">Email</a>
+          </div>
+        </div>
+
+        <!-- STM32 MCU with clock tree -->
+        <div class="hero__mcu">
+          <canvas id="mcu-canvas" aria-label="Animated STM32 microcontroller with clock tree"></canvas>
+        </div>
+      </div>
+
+      <div class="hero__ticker" aria-hidden="true">
+        <div class="hero__ticker-track" id="ticker">
+          <span>STM32</span><span>ESP32</span><span>Embedded C</span><span>LoRa</span><span>I2C</span>
+          <span>SPI</span><span>UART</span><span>FreeRTOS-ready</span><span>MQTT</span><span>Soldering</span>
+          <span>Oscilloscope</span><span>PCB</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== ABOUT — UART SERIAL ====================== -->
+    <section id="about" class="section about" data-rail="about" data-activate="uart">
+      <div class="sec-head">
+        <span class="sec-idx">0x01</span>
+        <h2 class="sec-title">About // UART RX·TX</h2>
+        <p class="sec-sub">A serial link to the operator. Streaming identity over USART2 @ 115200 baud.</p>
+      </div>
+
+      <div class="uart">
+        <!-- the serial line with traveling bits -->
+        <div class="uart__line" id="uart-line" aria-hidden="true">
+          <span class="uart__node uart__node--tx">TX</span>
+          <span class="uart__wire"><i id="uart-bits"></i></span>
+          <span class="uart__node uart__node--rx">RX</span>
+        </div>
+
+        <div class="uart__grid">
+          <!-- serial monitor -->
+          <div class="serial">
+            <div class="serial__bar">
+              <span class="led led--g"></span> SERIAL MONITOR — /dev/ttyUSB0 · 115200 8N1
+              <span class="serial__status" id="serial-status">● LISTENING</span>
+            </div>
+            <pre class="serial__out" id="serial-out"></pre>
+          </div>
+
+          <!-- profile facts -->
+          <div class="about__facts">
+            <div class="fact"><span class="fact__k">role</span><span class="fact__v">Embedded Systems &amp; IoT Developer</span></div>
+            <div class="fact"><span class="fact__k">edu</span><span class="fact__v">B.Tech ECE · Heritage Institute (2026) · DGPA 7.98</span></div>
+            <div class="fact"><span class="fact__k">prev</span><span class="fact__v">Diploma E&amp;I · Siliguri Govt. Polytechnic</span></div>
+            <div class="fact"><span class="fact__k">loc</span><span class="fact__v">Howrah, WB · open to relocation</span></div>
+            <div class="fact"><span class="fact__k">lang</span><span class="fact__v">Bengali · English · Hindi</span></div>
+            <div class="fact"><span class="fact__k">yt</span><span class="fact__v"><a href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener">@TechanicZ</a></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== SKILLS — 74HC595 SHIFT REGISTER ====================== -->
+    <section id="skills" class="section skills" data-rail="skills" data-activate="shiftreg">
+      <div class="sec-head">
+        <span class="sec-idx">0x02</span>
+        <h2 class="sec-title">Skills // 74HC595 Shift-Out</h2>
+        <p class="sec-sub">Clocking bits into the shift register — each latched output (Q0–Q7) energizes a capability bank.</p>
+      </div>
+
+      <!-- the shift register visual -->
+      <div class="sr" id="sr">
+        <div class="sr__ctrl">
+          <span class="sr__pin"><i>SER</i><b id="sr-ser">0</b></span>
+          <span class="sr__pin"><i>SRCLK</i><b id="sr-clk">0</b></span>
+          <span class="sr__pin"><i>RCLK</i><b id="sr-rclk">0</b></span>
+        </div>
+        <div class="sr__stages" id="sr-stages" aria-hidden="true"></div>
+        <button class="sr__btn" id="sr-btn" type="button">▶ CLOCK IN SKILLS</button>
+      </div>
+
+      <div class="skills__grid" id="skills-grid">
+        <article class="skillbank" data-q="0">
+          <header><span class="skillbank__q">Q0</span><h3>💻 Languages</h3></header>
+          <div class="chips">
+            <span>C</span><span>C++</span><span>Embedded C</span><span>Python</span>
+            <span>JavaScript</span><span>SQL</span><span>HTML5</span><span>CSS3</span>
+          </div>
+        </article>
+        <article class="skillbank" data-q="1">
+          <header><span class="skillbank__q">Q1</span><h3>🔌 MCUs &amp; Hardware</h3></header>
+          <div class="chips">
+            <span>STM32 F446RE</span><span>ESP32</span><span>Arduino</span><span>Raspberry Pi</span>
+            <span>Schematics &amp; PCB</span><span>Soldering</span><span>SMPS · Li-ion · Solar</span>
+          </div>
+        </article>
+        <article class="skillbank" data-q="2">
+          <header><span class="skillbank__q">Q2</span><h3>📡 Protocols</h3></header>
+          <div class="chips">
+            <span>I2C</span><span>SPI</span><span>UART</span><span>GPIO</span>
+            <span>LoRa (RYLR998)</span><span>MQTT</span><span>Bluetooth</span><span>Wi-Fi</span>
+          </div>
+        </article>
+        <article class="skillbank" data-q="3">
+          <header><span class="skillbank__q">Q3</span><h3>🧰 Tools &amp; Diagnostics</h3></header>
+          <div class="chips">
+            <span>Multimeter</span><span>Oscilloscope</span><span>Git &amp; GitHub</span>
+            <span>Arduino IDE</span><span>VS Code</span><span>Django</span><span>Linux</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====================== PROJECTS — DMA TRANSFER ====================== -->
+    <section id="projects" class="section projects" data-rail="projects" data-activate="dma">
+      <div class="sec-head">
+        <span class="sec-idx">0x03</span>
+        <h2 class="sec-title">Projects // DMA Burst</h2>
+        <p class="sec-sub">Transferring build records from memory — peripheral modules decoded onto the bus.</p>
+      </div>
+
+      <div class="projects__grid">
+        <article class="pcard pcard--feature tilt" data-dma>
+          <div class="pcard__scan"></div>
+          <span class="pcard__addr">0x3000 · FEATURED</span>
+          <span class="pcard__badge">Final Year · 2026</span>
+          <h3>🌾 LoRa Agriculture Automation</h3>
+          <p>
+            A dual-node, off-grid smart-farming ecosystem. A <strong>Farm Node</strong> (ESP32 + RYLR998 LoRa)
+            reads DHT22, MQ135 &amp; soil-moisture sensors and drives Peltier AC, humidifier, exhaust fan and
+            irrigation pump via relays. A portable <strong>Control Node</strong> with a 1.3" OLED gives live
+            telemetry and Auto/Manual override — powered 24/7 by a 12V/20A SMPS, dual 18650 + solar/TP4056,
+            with an MQTT cloud dashboard.
+          </p>
+          <div class="pcard__tags"><span>ESP32</span><span>LoRa</span><span>MQTT</span><span>Solar</span><span>Relays</span><span>OLED</span></div>
+          <div class="pcard__links">
+            <a href="https://github.com/khanprabalkanti/AgriSmart-2026-HITK-Project" target="_blank" rel="noopener">Repo 🔒</a>
+            <a href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener">Watch ▶</a>
+          </div>
+        </article>
+
+        <article class="pcard tilt" data-dma>
+          <div class="pcard__scan"></div>
+          <span class="pcard__addr">0x3001</span>
+          <span class="pcard__badge">Electro-Mechanical</span>
+          <h3>🔊 DIY Bluetooth Speaker</h3>
+          <p>A custom portable speaker — fabricated a PVC-pipe enclosure with mechanical fitting to a planned layout, and wired a 4S Li-ion pack to the audio modules, verifying voltage &amp; polarity before power-up.</p>
+          <div class="pcard__tags"><span>Li-ion</span><span>Assembly</span><span>Audio</span></div>
+          <div class="pcard__links"><a href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener">Watch ▶</a></div>
+        </article>
+
+        <article class="pcard tilt" data-dma>
+          <div class="pcard__scan"></div>
+          <span class="pcard__addr">0x3002</span>
+          <span class="pcard__badge">Team Leader</span>
+          <h3>🏠 Smart Home Automation</h3>
+          <p>Solar-powered multi-module home automation: Bluetooth relay switching, IR doorbell, LDR lighting, and automatic tank cutoff (BC547 + relay). Each module independently tested; firmware written from scratch in Embedded C.</p>
+          <div class="pcard__tags"><span>Arduino</span><span>Bluetooth</span><span>Embedded C</span></div>
+          <div class="pcard__links"><a href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener">Watch ▶</a></div>
+        </article>
+
+        <article class="pcard tilt" data-dma>
+          <div class="pcard__scan"></div>
+          <span class="pcard__addr">0x3003</span>
+          <span class="pcard__badge">Build Log</span>
+          <h3>🖥️ Raspberry Pi Touch Computer</h3>
+          <p>A portable Raspberry Pi 4B+ build with integrated battery, speaker and camera — a compact all-in-one touchscreen computer, documented step-by-step.</p>
+          <div class="pcard__tags"><span>Raspberry Pi</span><span>Linux</span><span>Power</span></div>
+          <div class="pcard__links"><a href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener">Watch ▶</a></div>
+        </article>
+
+        <article class="pcard tilt" data-dma>
+          <div class="pcard__scan"></div>
+          <span class="pcard__addr">0x3004</span>
+          <span class="pcard__badge">Power</span>
+          <h3>🔋 15.4Ah Pack &amp; Solar Inverter</h3>
+          <p>A custom high-capacity 15.4Ah battery pack paired with a solar inverter setup — cell balancing, BMS wiring and an off-grid power architecture, all documented for makers.</p>
+          <div class="pcard__tags"><span>18650</span><span>BMS</span><span>Solar</span></div>
+          <div class="pcard__links"><a href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener">Watch ▶</a></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====================== EXPERIENCE — TIMER/PC STEP ====================== -->
+    <section id="experience" class="section experience" data-rail="experience" data-activate="timeline">
+      <div class="sec-head">
+        <span class="sec-idx">0x04</span>
+        <h2 class="sec-title">Experience // Program Counter</h2>
+        <p class="sec-sub">Stepping the instruction pointer through the career routine.</p>
+      </div>
+      <div class="timeline" id="timeline">
+        <div class="tl-item" data-step>
+          <div class="tl-node"></div>
+          <span class="tl-date">Jun – Jul 2025</span>
+          <h3>IoT &amp; Django Intern</h3>
+          <p class="tl-org">Euphoria GenX · via Heritage Institute of Technology</p>
+          <p>Developed real-time IoT dashboards linking live sensor data to a Django backend; validated end-to-end signal flow and resolved faults across the data-acquisition chain.</p>
+        </div>
+        <div class="tl-item" data-step>
+          <div class="tl-node"></div>
+          <span class="tl-date">Feb 2022 – Jul 2023</span>
+          <h3>STEM Innovation Engineer</h3>
+          <p class="tl-org">STEMROBO Technologies Pvt. Ltd.</p>
+          <p>Assembled, wired and tested embedded hardware across 20+ innovation labs. Performed component-level fault isolation on non-functioning equipment; trained 500+ users with 90% workshop satisfaction.</p>
+        </div>
+        <div class="tl-item" data-step>
+          <div class="tl-node"></div>
+          <span class="tl-date">2022 – 2026</span>
+          <h3>B.Tech — Electronics &amp; Communication Engineering</h3>
+          <p class="tl-org">Heritage Institute of Technology, Kolkata · DGPA 7.98</p>
+          <p>Core focus: embedded firmware design, control systems, power electronics, signal conditioning and DSA.</p>
+        </div>
+        <div class="tl-item" data-step>
+          <div class="tl-node"></div>
+          <span class="tl-date">2022</span>
+          <h3>Diploma — Electronics &amp; Instrumentation + Cert</h3>
+          <p class="tl-org">Siliguri Govt. Polytechnic · GPA 7.7</p>
+          <p>Certification: Microcontroller Embedded C Programming — Udemy (FastBitLab, Kiran Nayak).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== TELEMETRY — I2C OLED ====================== -->
+    <section id="telemetry" class="section telemetry" data-rail="telemetry" data-activate="oled">
+      <div class="sec-head">
+        <span class="sec-idx">0x05</span>
+        <h2 class="sec-title">Telemetry // I2C SSD1306</h2>
+        <p class="sec-sub">Connect SDA &amp; SCL to bring the 0.96" OLED online (slave addr 0x3C).</p>
+      </div>
+
+      <div class="oled-lab">
+        <div class="oled-wrap">
+          <div class="oled" id="oled">
+            <canvas id="oled-canvas" width="256" height="128" aria-label="Simulated SSD1306 OLED telemetry display"></canvas>
+            <div class="oled__off" id="oled-off">DISPLAY OFF</div>
+          </div>
+          <div class="oled__pins">
+            <button class="i2cpin" id="pin-sda" type="button"><i>SDA</i><b>○</b></button>
+            <button class="i2cpin" id="pin-scl" type="button"><i>SCL</i><b>○</b></button>
+            <span class="i2cpin i2cpin--static"><i>VCC</i><b>●</b></span>
+            <span class="i2cpin i2cpin--static"><i>GND</i><b>●</b></span>
+          </div>
+        </div>
+        <div class="oled-note">
+          <p>Tap <b>SDA</b> then <b>SCL</b> to wire the bus. Once both lines are pulled up, the master issues
+          <code>0x3C</code> + init commands and the panel renders live telemetry — uptime, signal and a build readout.</p>
+          <div class="oled-readout" id="oled-readout">
+            <span class="led led--r" id="oled-led"></span> <span id="oled-state">BUS IDLE — SDA/SCL floating</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== GPIO LAB — INTERACTIVE REGISTERS ====================== -->
+    <section id="gpio" class="section gpio" data-rail="gpio" data-activate="gpio">
+      <div class="sec-head">
+        <span class="sec-idx">0x06</span>
+        <h2 class="sec-title">GPIO Lab // Bare-Metal Registers</h2>
+        <p class="sec-sub">Pick any port (A–D), wire your own LED and push-button to <em>any</em> pin, then bring it to life the bare-metal way — enable the RCC clock, set MODER, drive ODR, read IDR. Mirror the button to the LED to blink on input.</p>
+      </div>
+
+      <div class="glab">
+        <!-- ===== physical scene ===== -->
+        <div class="glab__scene">
+          <div class="glab__ports" id="g-ports" role="tablist" aria-label="GPIO port">
+            <button class="gport on" data-port="A" role="tab">GPIOA</button>
+            <button class="gport" data-port="B" role="tab">GPIOB</button>
+            <button class="gport" data-port="C" role="tab">GPIOC</button>
+            <button class="gport" data-port="D" role="tab">GPIOD</button>
+          </div>
+
+          <div class="glab__tools">
+            <button class="gtool" id="tool-led" type="button"><span class="gtool__dot gtool__dot--led"></span> Wire LED</button>
+            <button class="gtool" id="tool-btn" type="button"><span class="gtool__dot gtool__dot--btn"></span> Wire Button</button>
+            <button class="gtool gtool--ghost" id="tool-reset" type="button">↺ Reset port</button>
+          </div>
+
+          <svg id="g-svg" viewBox="0 0 560 430" preserveAspectRatio="xMidYMid meet" aria-label="GPIO wiring scene: a microcontroller port with eight pins, plus an LED and a push button you connect to any pin">
+            <g id="g-wires"></g>
+            <!-- chip -->
+            <rect x="34" y="58" width="176" height="320" rx="14" class="gchip"/>
+            <text x="50" y="86" class="gchip__lbl" id="g-chip-lbl">GPIOA</text>
+            <text x="50" y="104" class="gchip__sub">STM32F446 · PORT</text>
+            <g id="g-pads"></g>
+            <!-- LED component -->
+            <g id="g-led" class="gcomp">
+              <line x1="470" y1="120" x2="470" y2="150" class="gcomp__lead"/>
+              <circle cx="470" cy="96" r="26" class="gled__bulb"/>
+              <path d="M458 104 L470 78 L482 104" class="gled__fil"/>
+              <text x="470" y="172" text-anchor="middle" class="gcomp__lbl" id="g-led-lbl">LED · unwired</text>
+              <circle cx="436" cy="96" r="7" class="gcomp__anchor" id="g-led-anchor"/>
+            </g>
+            <!-- Button component -->
+            <g id="g-btn" class="gcomp">
+              <rect x="446" y="300" width="48" height="48" rx="8" class="gbtn__cap" id="g-btn-cap"/>
+              <text x="470" y="330" text-anchor="middle" class="gbtn__txt">PUSH</text>
+              <text x="470" y="372" text-anchor="middle" class="gcomp__lbl" id="g-btn-lbl">BTN · unwired</text>
+              <circle cx="436" cy="324" r="7" class="gcomp__anchor" id="g-btn-anchor"/>
+            </g>
+          </svg>
+
+          <div class="glab__hint" id="g-hint">// select a port, then tap “Wire LED” and a pin</div>
+        </div>
+
+        <!-- ===== registers ===== -->
+        <div class="glab__regs">
+          <div class="greg" id="greg-rcc">
+            <div class="greg__row"><span class="greg__name">RCC-&gt;AHB1ENR</span><span class="greg__hex" id="g-rcc-hex">0x00</span></div>
+            <div class="greg__bits" id="g-rcc"></div>
+            <p class="greg__hint">Clock-gates each port. Click the highlighted bit to enable the selected port (A=0 · B=1 · C=2 · D=3).</p>
+          </div>
+
+          <div class="greg" id="greg-moder" data-locked>
+            <div class="greg__row"><span class="greg__name" id="g-moder-name">GPIOA-&gt;MODER</span><span class="greg__hex" id="g-moder-hex">0x0000</span></div>
+            <div class="greg__bits" id="g-moder"></div>
+            <p class="greg__hint">2 bits per pin · click a pin to cycle <b>00</b> input → <b>01</b> output. Set the LED pin to OUTPUT, the button pin to INPUT.</p>
+          </div>
+
+          <div class="greg" id="greg-odr" data-locked>
+            <div class="greg__row"><span class="greg__name" id="g-odr-name">GPIOA-&gt;ODR</span><span class="greg__hex" id="g-odr-hex">0x00</span></div>
+            <div class="greg__bits" id="g-odr"></div>
+            <p class="greg__hint">Output latch — click the LED pin’s bit to drive it HIGH and light the LED (output mode only).</p>
+          </div>
+
+          <div class="greg" id="greg-idr">
+            <div class="greg__row"><span class="greg__name" id="g-idr-name">GPIOA-&gt;IDR</span><span class="greg__hex" id="g-idr-hex">0x00</span></div>
+            <div class="greg__bits" id="g-idr"></div>
+            <p class="greg__hint">Read-only input — the button pin reads <b>1</b> while pressed (input mode).</p>
+          </div>
+
+          <label class="gmirror"><input type="checkbox" id="g-link"><span class="sw__track"><span class="sw__knob"></span></span>
+            <span class="gmirror__txt">Mirror button → LED <i>// while(1){ if(IDR&amp;btn) ODR|=led; }</i></span>
+          </label>
+
+          <p class="glab__status" id="g-status">// enable the RCC clock to begin</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====================== CONNECT — WIRE TO CONTACT ====================== -->
+    <section id="connect" class="section connect" data-rail="connect">
+      <div class="sec-head">
+        <span class="sec-idx">0x07</span>
+        <h2 class="sec-title">Connect // Close the Loop</h2>
+        <p class="sec-sub">Drag the wire from the battery <strong>+</strong> terminal to the bulb to energize my contact channel.</p>
+      </div>
+
+      <div class="circuit-lab">
+        <svg id="wire-svg" viewBox="0 0 760 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Interactive circuit: connect the battery to the bulb">
+          <g class="lab-traces">
+            <path d="M120 230 H 300" /><path d="M460 230 H 640" />
+            <circle cx="300" cy="230" r="4" /><circle cx="460" cy="230" r="4" />
+          </g>
+          <g class="battery">
+            <rect x="60" y="190" width="90" height="80" rx="8" />
+            <text x="105" y="236" text-anchor="middle" class="batt-label">9V</text>
+            <text x="160" y="200" class="term term--minus">–</text>
+          </g>
+          <g class="bulb" id="bulb">
+            <circle cx="640" cy="120" r="46" class="bulb__glass" />
+            <path class="bulb__filament" d="M620 130 q20 -40 40 0" />
+            <rect x="626" y="160" width="28" height="20" rx="3" class="bulb__base" />
+            <line x1="640" y1="180" x2="640" y2="230" class="bulb__lead" />
+            <circle cx="640" cy="230" r="6" class="node node--bulb" id="node-bulb" />
+          </g>
+          <circle cx="150" cy="160" r="11" class="node node--plus" id="node-plus" />
+          <text x="150" y="140" text-anchor="middle" class="term term--plus">+</text>
+          <path id="live-wire" class="live-wire" d="" />
+          <path id="done-wire" class="done-wire" d="" />
+        </svg>
+        <div class="lab-status">
+          <span class="lab-status__led" id="lab-led"></span>
+          <span id="lab-text">CIRCUIT OPEN — awaiting connection</span>
+        </div>
+      </div>
+
+      <div class="contact-reveal" id="contact-reveal" aria-hidden="true">
+        <p class="contact-reveal__on">⚡ CIRCUIT CLOSED — contact channel energized</p>
+        <div class="contact-cards">
+          <a class="ccard" href="mailto:prabalkanti.work@gmail.com"><span class="ccard__ic">✉</span><span class="ccard__k">Email</span><span class="ccard__v">prabalkanti.work@gmail.com</span></a>
+          <a class="ccard" href="tel:+919330773172"><span class="ccard__ic">☎</span><span class="ccard__k">Phone</span><span class="ccard__v">+91 93307 73172</span></a>
+          <a class="ccard" href="https://www.linkedin.com/in/prabal-kanti-khan-84b23a223/" target="_blank" rel="noopener"><span class="ccard__ic">in</span><span class="ccard__k">LinkedIn</span><span class="ccard__v">Prabal Kanti Khan</span></a>
+          <a class="ccard" href="https://github.com/khanprabalkanti" target="_blank" rel="noopener"><span class="ccard__ic">⌥</span><span class="ccard__k">GitHub</span><span class="ccard__v">khanprabalkanti</span></a>
+          <a class="ccard" href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener"><span class="ccard__ic">▶</span><span class="ccard__k">YouTube</span><span class="ccard__v">@TechanicZ</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====================== FOOTER ====================== -->
+  <footer class="footer">
+    <p class="footer__quote">&ldquo;Build things that make life easier. Learn things that make you sharper.&rdquo;</p>
+    <div class="footer__socials">
+      <a href="https://github.com/khanprabalkanti" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/prabal-kanti-khan-84b23a223/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener">YouTube</a>
+      <a href="mailto:prabalkanti.work@gmail.com">Email</a>
+    </div>
+    <p class="footer__copy">© <span id="year"></span> Prabal Kanti Khan · hand-soldered with ⚡ &amp; vanilla JS</p>
+  </footer>
+
+  <button id="to-top" class="to-top" aria-label="Back to top">▲</button>
+
+  <script src="js/pcb.js" defer></script>
+  <script src="js/hero-mcu.js" defer></script>
+  <script src="js/uart.js" defer></script>
+  <script src="js/shiftreg.js" defer></script>
+  <script src="js/oled.js" defer></script>
+  <script src="js/gpio.js" defer></script>
+  <script src="js/wire.js" defer></script>
+  <script src="js/assembly.js" defer></script>
+  <script src="js/core.js" defer></script>
+</body>
+</html>
