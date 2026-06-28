@@ -340,6 +340,10 @@ a:hover{ color:var(--accent-d); }
 .btn--solid:hover{ background:var(--accent-d); color:#fff; transform:translateY(-2px); }
 .btn--ghost{ background:transparent; color:var(--accent); }
 .btn--ghost:hover{ background:rgba(61,90,254,.08); transform:translateY(-2px); }
+.btn--icon{ display:inline-flex; align-items:center; gap:8px; }
+.btn--icon svg{ width:1.05em; height:1.05em; flex:0 0 auto; }
+.btn--yt{ color:#e23a2e; border-color:#e23a2e; }
+.btn--yt:hover{ background:rgba(226,58,46,.08); transform:translateY(-2px); }
 
 /* connector preview list (hero projects) */
 .conn-list{ display:flex; flex-direction:column; gap:12px; }
