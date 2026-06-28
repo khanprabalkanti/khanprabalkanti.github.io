@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Contact · Prabal Kanti Khan | Embedded Systems Engineer</title>
+  <meta name="description" content="Get in touch with Prabal Kanti Khan — Embedded Systems Engineer. Email, phone, LinkedIn, GitHub, YouTube, or send a message." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#e9eefb" />
+  <link rel="canonical" href="https://prabalkanti.dev/contact.html" />
+
+  <meta property="og:title" content="Contact · Prabal Kanti Khan" />
+  <meta property="og:description" content="Get in touch — embedded / IoT / firmware roles and collaborations." />
+  <meta property="og:image" content="https://prabalkanti.dev/assets/og-preview.png" />
+  <meta property="og:url" content="https://prabalkanti.dev/contact.html" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ====================== TOP BAR ====================== -->
+  <header class="topbar" id="topbar">
+    <div class="topbar__inner">
+      <a href="index.html" class="brand" aria-label="Prabal Kanti Khan — home">
+        <span class="brand__name">PRABAL KANTI KHAN</span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Primary">
+        <a href="index.html#identity">IDENTITY</a>
+        <a href="index.html#about">ABOUT</a>
+        <a href="index.html#skills">SKILLS</a>
+        <a href="index.html#projects">PROJECTS</a>
+        <a href="index.html#experience">EXPERIENCE</a>
+        <a href="index.html#gpio">GPIO</a>
+        <a href="index.html#playground">PLAYGROUND</a>
+        <a href="contact.html" class="is-active">CONTACT</a>
+      </nav>
+
+      <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="board">
+    <section class="section" id="contact">
+      <div class="net"><span class="net__label">NET: CONTACT</span></div>
+      <h1 class="display display--sm">LET'S CONNECT</h1>
+      <p class="subtitle">EMBEDDED · IoT · FIRMWARE — OPEN TO ROLES &amp; COLLABORATIONS</p>
+      <p class="lede">Have a project, a role, or just a hardware question? Reach me on any channel below, or drop a message — it opens your mail client pre-filled.</p>
+
+      <div class="contact-layout">
+        <!-- channels -->
+        <div class="contact-cards contact-cards--page">
+          <a class="ccard" href="mailto:prabalkanti.work@gmail.com">
+            <span class="ccard__ic">✉</span><span class="ccard__k">EMAIL</span><span class="ccard__v">prabalkanti.work@gmail.com</span>
+          </a>
+          <a class="ccard" href="tel:+919330773172">
+            <span class="ccard__ic">☎</span><span class="ccard__k">PHONE</span><span class="ccard__v">+91 93307 73172</span>
+          </a>
+          <a class="ccard" href="https://www.linkedin.com/in/prabal-kanti-khan-84b23a223/" target="_blank" rel="noopener">
+            <span class="ccard__ic">in</span><span class="ccard__k">LINKEDIN</span><span class="ccard__v">Prabal Kanti Khan</span>
+          </a>
+          <a class="ccard" href="https://github.com/khanprabalkanti" target="_blank" rel="noopener">
+            <span class="ccard__ic">⌥</span><span class="ccard__k">GITHUB</span><span class="ccard__v">khanprabalkanti</span>
+          </a>
+          <a class="ccard" href="https://www.youtube.com/@TechanicZ" target="_blank" rel="noopener">
+            <span class="ccard__ic">▶</span><span class="ccard__k">YOUTUBE</span><span class="ccard__v">@TechanicZ</span>
+          </a>
+          <span class="ccard ccard--static">
+            <span class="ccard__ic">⌖</span><span class="ccard__k">LOCATION</span><span class="ccard__v">Howrah, WB · open to relocation</span>
+          </span>
+        </div>
+
+        <!-- message form (mailto-based, no backend) -->
+        <form class="cform" id="cform" novalidate>
+          <h2 class="cform__title">SEND A MESSAGE</h2>
+          <div class="cform__row">
+            <label for="cf-name">YOUR NAME</label>
+            <input type="text" id="cf-name" name="name" autocomplete="name" required />
+          </div>
+          <div class="cform__row">
+            <label for="cf-email">YOUR EMAIL</label>
+            <input type="email" id="cf-email" name="email" autocomplete="email" required />
+          </div>
+          <div class="cform__row">
+            <label for="cf-subject">SUBJECT</label>
+            <input type="text" id="cf-subject" name="subject" />
+          </div>
+          <div class="cform__row">
+            <label for="cf-msg">MESSAGE</label>
+            <textarea id="cf-msg" name="message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn--solid">COMPOSE EMAIL ▸</button>
+          <p class="cform__note" id="cf-note" role="status" aria-live="polite">
+            // this opens your email app with the message pre-filled. Or email
+            <a href="mailto:prabalkanti.work@gmail.com">prabalkanti.work@gmail.com</a> directly.
+          </p>
+        </form>
+      </div>
+
+      <a class="back-home" href="index.html">◂ Back to portfolio</a>
+    </section>
+  </main>
+
+  <!-- ====================== FOOTER NAV BAR ====================== -->
+  <nav class="footbar" aria-label="Footer navigation">
+    <a href="index.html#projects">PROJECTS</a>
+    <a href="index.html#experience">EXPERIENCE</a>
+    <a href="index.html#skills">SKILLS</a>
+    <a href="index.html#playground">PLAYGROUND</a>
+    <a href="https://github.com/khanprabalkanti" target="_blank" rel="noopener">GITHUB ↗</a>
+    <a href="contact.html">CONTACT</a>
+  </nav>
+  <footer class="footer">
+    <p class="footer__quote">&ldquo;Build things that make life easier. Learn things that make you sharper.&rdquo;</p>
+    <p class="footer__copy">© <span id="year"></span> Prabal Kanti Khan · Embedded Systems Engineer</p>
+  </footer>
+
+  <button id="to-top" class="to-top" aria-label="Back to top">▲</button>
+
+  <script src="js/blueprint.js" defer></script>
+  <script>
+    /* mailto compose — works without a backend */
+    (function () {
+      var f = document.getElementById('cform');
+      if (!f) return;
+      f.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = (document.getElementById('cf-name').value || '').trim();
+        var email = (document.getElementById('cf-email').value || '').trim();
+        var subject = (document.getElementById('cf-subject').value || '').trim();
+        var msg = (document.getElementById('cf-msg').value || '').trim();
+        if (!name || !email || !msg) {
+          var note = document.getElementById('cf-note');
+          if (note) note.textContent = '// please fill in your name, email and a message.';
+          return;
+        }
+        var subj = subject || ('Portfolio contact from ' + name);
+        var body = msg + '\n\n— ' + name + ' (' + email + ')';
+        window.location.href = 'mailto:prabalkanti.work@gmail.com'
+          + '?subject=' + encodeURIComponent(subj)
+          + '&body=' + encodeURIComponent(body);
+      });
+    })();
+  </script>
+</body>
+</html>

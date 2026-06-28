@@ -10,3 +10,6 @@ Thumbs.db
 /tmp/
 *.log
 _*.html
+
+# local-only deployment guide (not published)
+Deployment_Guide.pdf
